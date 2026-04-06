@@ -51,8 +51,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
-
-        SpawnTaupe();
     }
 
     void Start()
@@ -64,9 +62,11 @@ public class GameManager : MonoBehaviour
     {
         if (timerActif)
         {
-            tempsEcoule += Time.deltaTime;
+            tempsEcoule -= Time.deltaTime;
             AfficherTimer();
+            if (tempsEcoule < 0f) TerminerPartie();
         }
+
     }
 
     public void ChangerEtat(EtatJeu nouvelEtat)
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CommencerPartie()
     {
-        tempsEcoule = 0f;
+        tempsEcoule = 20f;
         timerActif = true;
         AfficherTimer();
         ChangerEtat(EtatJeu.EnJeu);
@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void TerminerPartie()
     {
+        Debug.Log(tempsEcoule);
         timerActif = false;
         int score = Mathf.Max(100, 1000 - Mathf.FloorToInt(tempsEcoule) * 10);
         texteScoreFinal.text = $"Score : {score}";
