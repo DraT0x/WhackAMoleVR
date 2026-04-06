@@ -54,11 +54,16 @@ public class GameManager : MonoBehaviour
     public void SpawnTaupe()
     {
         if (partieTermine) return;
+        int spawnChoisi = 0;
 
         // choisir aléatoirement parmi les cases disponibles
-    
-        Transform spawnChoisi = SpawnerTaupe.transform.Find("4");
-        Instantiate(TaupePrefab, spawnChoisi.position, Quaternion.identity, spawnChoisi); // Généré par Claude.AI - 2026-04-06
+
+
+
+        Transform transformSpawnChoisi = SpawnerTaupe.transform.Find(spawnChoisi.ToString());
+        disponibiliteSpawn[spawnChoisi] = false;
+
+        Instantiate(TaupePrefab, transformSpawnChoisi.position, Quaternion.identity, transformSpawnChoisi); // Généré par Claude.AI - 2026-04-06
     }
 
     public void SupprimerTaupe(GameObject taupe)
