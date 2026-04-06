@@ -1,12 +1,11 @@
 /*
 * Singleton du game manager pour le jeu de whack-a-mole
 * @author : Félix Dupras-Simard
+* Inspiré des notes de cours d'environnements immersifs de Frédérik Taleb - [consulté le 2024-04-06]
 */
 using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,9 +21,25 @@ public class GameManager : MonoBehaviour
         true, true, true
     };
 
-    // Gestion de la partie
-    private bool partieTermine = false;
+    /// <summary>
+    /// Gestion de la partie
+    /// </summary>
+    public enum EtatJeu { Menu, EnJeu, GameOver }
+
+    [Header("Canvas")]
+    [SerializeField] private GameObject canvasMenu;
+    [SerializeField] private GameObject canvasHUD;
+    [SerializeField] private GameObject canvasGameOver;
+
+    [Header("Textes")]
+    [SerializeField] private TextMeshProUGUI texteTimer;
+    [SerializeField] private TextMeshProUGUI texteScoreFinal;
+
+    private EtatJeu etatActuel;
     private int pointPartie = 0;
+
+    private float tempsEcoule;
+    private bool timerActif;
 
     private void Awake()
     {
@@ -40,6 +55,64 @@ public class GameManager : MonoBehaviour
         SpawnTaupe();
     }
 
+    void Start()
+    {
+        ChangerEtat(EtatJeu.Menu);
+    }
+
+    void Update()
+    {
+        if (timerActif)
+        {
+            tempsEcoule += Time.deltaTime;
+            AfficherTimer();
+        }
+    }
+
+    public void ChangerEtat(EtatJeu nouvelEtat)
+    {
+        etatActuel = nouvelEtat;
+        canvasMenu.SetActive(etatActuel == EtatJeu.Menu);
+        canvasHUD.SetActive(etatActuel == EtatJeu.EnJeu);
+        canvasGameOver.SetActive(etatActuel == EtatJeu.GameOver);
+    }
+
+    /// <summary>
+    /// Initialisation de la partie
+    /// </summary>
+    public void CommencerPartie()
+    {
+        tempsEcoule = 0f;
+        timerActif = true;
+        AfficherTimer();
+        ChangerEtat(EtatJeu.EnJeu);
+    }
+
+    /// <summary>
+    /// Arrêt de la partie en cours
+    /// </summary>
+    private void TerminerPartie()
+    {
+        timerActif = false;
+        int score = Mathf.Max(100, 1000 - Mathf.FloorToInt(tempsEcoule) * 10);
+        texteScoreFinal.text = $"Score : {score}";
+        ChangerEtat(EtatJeu.GameOver);
+    }
+
+    public void Rejouer()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
+        );
+    }
+
+    private void AfficherTimer()
+    {
+        int minutes = Mathf.FloorToInt(tempsEcoule / 60f);
+        int secondes = Mathf.FloorToInt(tempsEcoule % 60f);
+        texteTimer.text = $"{minutes:00}:{secondes:00}";
+    }
+
     /// <summary>
     /// Ajoute la valeur de point au joueur
     /// </summary>
@@ -53,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     public void SpawnTaupe()
     {
-        if (partieTermine) return;
+        if (etatActuel != EtatJeu.EnJeu) return;
         int spawnChoisi = 0;
 
         // choisir aléatoirement parmi les cases disponibles
@@ -68,27 +141,11 @@ public class GameManager : MonoBehaviour
 
     public void SupprimerTaupe(GameObject taupe)
     {
-        if (partieTermine) return;
+        if (etatActuel != EtatJeu.EnJeu) return;
         if (taupe.transform.parent == null || taupe.transform.parent.tag != "CaseSpawner") return;
 
         int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
         disponibiliteSpawn[SpawnNumber] = true;
         Destroy(taupe);
-    }
-
-    /// <summary>
-    /// Initialisation de la partie
-    /// </summary>
-    public void CommencerPartie()
-    {
-        partieTermine = false;
-    }
-
-    /// <summary>
-    /// Arrêt de la partie en cours
-    /// </summary>
-    private void TerminerPartie()
-    {
-        partieTermine = true;
     }
 }
