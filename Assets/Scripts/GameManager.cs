@@ -2,14 +2,29 @@
 * Singleton du game manager pour le jeu de whack-a-mole
 * @author : Félix Dupras-Simard
 */
+using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    private bool partieTermine;
-    private int pointPartie;
+    [Header("Spawn")]
+    [SerializeField] private GameObject SpawnerTaupe;
+    [SerializeField] private GameObject TaupePrefab;
+    private bool[] disponibiliteSpawn =
+    {
+        true, true, true,
+        true, true, true,
+        true, true, true
+    };
+
+    // Gestion de la partie
+    private bool partieTermine = false;
+    private int pointPartie = 0;
 
     private void Awake()
     {
@@ -22,7 +37,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        pointPartie = 0;
+        SpawnTaupe();
     }
 
     /// <summary>
@@ -34,6 +49,26 @@ public class GameManager : MonoBehaviour
         if (quantitePoint < 0) return;
 
         pointPartie += quantitePoint;
+    }
+
+    public void SpawnTaupe()
+    {
+        if (partieTermine) return;
+
+        // choisir aléatoirement parmi les cases disponibles
+    
+        Transform spawnChoisi = SpawnerTaupe.transform.Find("4");
+        Instantiate(TaupePrefab, spawnChoisi.position, Quaternion.identity, spawnChoisi); // Généré par Claude.AI - 2026-04-06
+    }
+
+    public void SupprimerTaupe(GameObject taupe)
+    {
+        if (partieTermine) return;
+        if (taupe.transform.parent == null || taupe.transform.parent.tag != "CaseSpawner") return;
+
+        int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
+        disponibiliteSpawn[SpawnNumber] = true;
+        Destroy(taupe);
     }
 
     /// <summary>

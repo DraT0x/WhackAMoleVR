@@ -5,19 +5,20 @@
 */
 using UnityEngine;
 
+
 public class TaupeHandler : MonoBehaviour
 {   
     [Header("Informations Taupe")]
     [SerializeField] private int valeurPoint = 5;
 
+    public int IndexSpawn { get; set; }
+
     // Variable Interne
     private bool taupeEstTouche;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -32,9 +33,8 @@ public class TaupeHandler : MonoBehaviour
         if (collision.gameObject.tag != "MarteauJoueur") return;
 
         taupeEstTouche = true;
-        
-        GameManager.Instance.AjouterPoint(valeurPoint);
 
-        Destroy(gameObject);
+        GameManager.Instance.AjouterPoint(valeurPoint);
+        GameManager.Instance.SupprimerTaupe(gameObject);
     }
 }

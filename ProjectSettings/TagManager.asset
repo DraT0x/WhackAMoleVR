@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - MarteauJoueur
+  - CaseSpawner
   layers:
   - Default
   - TransparentFX
