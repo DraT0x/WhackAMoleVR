@@ -1,5 +1,5 @@
 /*
-* Gère les feedbacks sensoriels du marteau
+* Gére les feedbacks sensoriels du marteau
 * @author : Félix Dupras-Simard
 * Inspiré des notes de cours d'environnements immersifs de Frédérik Taleb - [consulté le 2024-04-06]
 */
