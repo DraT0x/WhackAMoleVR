@@ -95,13 +95,15 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void TerminerPartie()
     {
-        Debug.Log(tempsEcoule);
         timerActif = false;
         int score = Mathf.Max(100, 1000 - Mathf.FloorToInt(tempsEcoule) * 10);
         texteScoreFinal.text = $"Score : {score}";
         ChangerEtat(EtatJeu.GameOver);
     }
 
+    /// <summary>
+    /// Redémarre la scène
+    /// </summary>
     public void Rejouer()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(
@@ -109,6 +111,9 @@ public class GameManager : MonoBehaviour
         );
     }
 
+    /// <summary>
+    /// Affiche le compte à rebours
+    /// </summary>
     private void AfficherTimer()
     {
         int minutes = Mathf.FloorToInt(tempsEcoule / 60f);
@@ -127,10 +132,17 @@ public class GameManager : MonoBehaviour
         pointPartie += quantitePoint;
     }
 
+    /// <summary>
+    /// Séléction du spawn de la taupe
+    /// </summary>
+    /// <returns>Retourne le spawn choisi</returns>
     private int ChoisirSpawn()
     {
         if (etatActuel != EtatJeu.EnJeu) return -1;
         int spawnChoisi = -1;
+
+        // Vérifie si il y a une case disponible
+        if (!System.Array.Exists(disponibiliteSpawn, dispo => dispo)) return -1; // // Généré par Claude.AI - 2026-04-07
 
         while (spawnChoisi < 0)
         {
@@ -144,6 +156,9 @@ public class GameManager : MonoBehaviour
         return spawnChoisi;
     }
 
+    /// <summary>
+    /// Apparition de la taupe
+    /// </summary>
     public void SpawnTaupe()
     {
         if (etatActuel != EtatJeu.EnJeu) return;
@@ -154,7 +169,7 @@ public class GameManager : MonoBehaviour
         Transform transformSpawnChoisi = SpawnerTaupe.transform.Find(spawnChoisi.ToString());
         GameObject taupe = Instantiate(TaupePrefab, transformSpawnChoisi.position, Quaternion.identity, transformSpawnChoisi); // Généré par Claude.AI - 2026-04-06
 
-        StartCoroutine(SupprimerTaupe(taupe, 2f));
+        StartCoroutine(SupprimerTaupe(taupe, 3f));
     }
 
     /// <summary>
@@ -174,12 +189,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
-        while (true)
+        while (etatActuel == EtatJeu.EnJeu)
         {
-            if (etatActuel == EtatJeu.EnJeu)
-            {
-                SpawnTaupe();
-            }
+            SpawnTaupe();
             yield return new WaitForSeconds(1f);
         }
     }
