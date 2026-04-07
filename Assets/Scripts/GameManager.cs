@@ -4,6 +4,7 @@
 * Inspiré des notes de cours d'environnements immersifs de Frédérik Taleb - [consulté le 2024-04-06]
 */
 using System;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -86,6 +87,7 @@ public class GameManager : MonoBehaviour
         timerActif = true;
         AfficherTimer();
         ChangerEtat(EtatJeu.EnJeu);
+        StartCoroutine(SpawnLoop());
     }
 
     /// <summary>
@@ -125,28 +127,60 @@ public class GameManager : MonoBehaviour
         pointPartie += quantitePoint;
     }
 
+    private int ChoisirSpawn()
+    {
+        if (etatActuel != EtatJeu.EnJeu) return -1;
+        int spawnChoisi = -1;
+
+        while (spawnChoisi < 0)
+        {
+            int nombreAleatoire = UnityEngine.Random.Range(0, disponibiliteSpawn.Length);
+
+            if (!disponibiliteSpawn[nombreAleatoire]) continue;
+            disponibiliteSpawn[nombreAleatoire] = false;
+            spawnChoisi = nombreAleatoire;
+        }
+
+        return spawnChoisi;
+    }
+
     public void SpawnTaupe()
     {
         if (etatActuel != EtatJeu.EnJeu) return;
-        int spawnChoisi = 0;
 
-        // choisir aléatoirement parmi les cases disponibles
-
-
+        int spawnChoisi = ChoisirSpawn();
+        if (spawnChoisi < 0) return;
 
         Transform transformSpawnChoisi = SpawnerTaupe.transform.Find(spawnChoisi.ToString());
-        disponibiliteSpawn[spawnChoisi] = false;
+        GameObject taupe = Instantiate(TaupePrefab, transformSpawnChoisi.position, Quaternion.identity, transformSpawnChoisi); // Généré par Claude.AI - 2026-04-06
 
-        Instantiate(TaupePrefab, transformSpawnChoisi.position, Quaternion.identity, transformSpawnChoisi); // Généré par Claude.AI - 2026-04-06
+        StartCoroutine(SupprimerTaupe(taupe, 2f));
     }
 
-    public void SupprimerTaupe(GameObject taupe)
+    /// <summary>
+    /// Détruit automatiquement la taupe après un délai si elle n'a pas été frappée
+    /// </summary>
+    private IEnumerator SupprimerTaupe(GameObject taupe, float delai)
     {
-        if (etatActuel != EtatJeu.EnJeu) return;
-        if (taupe.transform.parent == null || taupe.transform.parent.tag != "CaseSpawner") return;
+        yield return new WaitForSeconds(delai);
 
-        int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
-        disponibiliteSpawn[SpawnNumber] = true;
-        Destroy(taupe);
+        if (taupe != null && etatActuel == EtatJeu.EnJeu && taupe.transform.parent != null && taupe.transform.parent.CompareTag("CaseSpawner"))
+        {
+            int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
+            disponibiliteSpawn[SpawnNumber] = true;
+            Destroy(taupe);
+        }
+    }
+
+    IEnumerator SpawnLoop()
+    {
+        while (true)
+        {
+            if (etatActuel == EtatJeu.EnJeu)
+            {
+                SpawnTaupe();
+            }
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
