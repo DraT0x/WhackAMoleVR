@@ -20,7 +20,7 @@ public class TaupeHandler : MonoBehaviour
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = gameObject.transform.parent.GetComponent<AudioSource>();
         audioSource.volume = 0.1f;
         audioSource.spatialBlend = 1f; // 100% 3D
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
@@ -36,6 +36,6 @@ public class TaupeHandler : MonoBehaviour
         audioSource.PlayOneShot(sonContactMarteau);
 
         GameManager.Instance.AjouterPoint(valeurPoint);
-        //GameManager.Instance.SupprimerTaupe(gameObject);
+        StartCoroutine(GameManager.Instance.SupprimerTaupe(gameObject, 0f));
     }
 }

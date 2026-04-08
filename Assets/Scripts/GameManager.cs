@@ -96,8 +96,7 @@ public class GameManager : MonoBehaviour
     private void TerminerPartie()
     {
         timerActif = false;
-        int score = Mathf.Max(100, 1000 - Mathf.FloorToInt(tempsEcoule) * 10);
-        texteScoreFinal.text = $"Score : {score}";
+        texteScoreFinal.text = $"Score : {pointPartie}";
         ChangerEtat(EtatJeu.GameOver);
     }
 
@@ -175,7 +174,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Détruit automatiquement la taupe après un délai si elle n'a pas été frappée
     /// </summary>
-    private IEnumerator SupprimerTaupe(GameObject taupe, float delai)
+    public IEnumerator SupprimerTaupe(GameObject taupe, float delai)
     {
         yield return new WaitForSeconds(delai);
 
