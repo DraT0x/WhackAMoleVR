@@ -22,11 +22,15 @@ public class TaupeHandler : MonoBehaviour
     {
         audioSource = gameObject.transform.parent.GetComponent<AudioSource>();
         audioSource.volume = 0.1f;
-        audioSource.spatialBlend = 1f; // 100% 3D
+        audioSource.spatialBlend = 1f;
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
         audioSource.maxDistance = 5f;
     }
 
+    /// <summary>
+    /// Collision avec la taupe
+    /// </summary>
+    /// <param name="collision">Information de la collision</param>
     void OnCollisionEnter(Collision collision)
     {
         if (taupeEstTouche) return;

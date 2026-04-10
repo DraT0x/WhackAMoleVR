@@ -34,7 +34,7 @@ public class FeedbackGrabMarteau : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = 0.5f;
-        audioSource.spatialBlend = 1f; // 100% 3D
+        audioSource.spatialBlend = 1f;
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
         audioSource.maxDistance = 5f;
     }
@@ -51,15 +51,22 @@ public class FeedbackGrabMarteau : MonoBehaviour
         grabInteractable.selectExited.RemoveListener(OnGrabExited);
     }
 
+    /// <summary>
+    /// Sélection du marteau
+    /// </summary>
+    /// <param name="args">args du grab</param>
     private void OnGrabEntered(SelectEnterEventArgs args)
     {
         controller = args.interactorObject.transform.GetComponent<XRBaseInputInteractor>();
         controller.SendHapticImpulse(amplitudeGrabMarteau, dureeGrabMarteau);
 
-        // Jouer le son à la position de l'objet
         audioSource.PlayOneShot(sonGrabMarteau);
     }
 
+    /// <summary>
+    /// Collision avec le marteau
+    /// </summary>
+    /// <param name="collision">Information sur la collision</param>
     void OnCollisionEnter(Collision collision)
     {
         if (controller == null) return;
@@ -67,6 +74,10 @@ public class FeedbackGrabMarteau : MonoBehaviour
         controller.SendHapticImpulse(amplitudeHitMarteau, dureeHitMarteau);
     }
 
+    /// <summary>
+    /// Drop du marteau
+    /// </summary>args du grab
+    /// <param name="args"></param>
     private void OnGrabExited(SelectExitEventArgs args)
     {
         controller = args.interactorObject.transform.GetComponent<XRBaseInputInteractor>();

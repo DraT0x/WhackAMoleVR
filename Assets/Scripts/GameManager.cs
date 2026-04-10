@@ -38,10 +38,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI texteScoreActuel;
     [SerializeField] private TextMeshProUGUI texteScoreFinal;
 
-
     private EtatJeu etatActuel;
     private int pointPartie = 0;
-
     private float tempsEcoule;
     private bool timerActif;
 
@@ -67,12 +65,16 @@ public class GameManager : MonoBehaviour
         if (timerActif)
         {
             tempsEcoule -= Time.deltaTime;
-            AfficherTimer();
+            AfficherCompteRebours();
             if (tempsEcoule < 0f) TerminerPartie();
         }
 
     }
 
+    /// <summary>
+    /// Change l'état du jeu
+    /// </summary>
+    /// <param name="nouvelEtat">Nouvel état du jeu</param>
     public void ChangerEtat(EtatJeu nouvelEtat)
     {
         etatActuel = nouvelEtat;
@@ -89,7 +91,7 @@ public class GameManager : MonoBehaviour
         tempsEcoule = 30f;
         timerActif = true;
         pointPartie = 0;
-        AfficherTimer();
+        AfficherCompteRebours();
         ChangerEtat(EtatJeu.EnJeu);
         StartCoroutine(SpawnLoop());
         texteScoreActuel.text = $"Score : {pointPartie}";
@@ -107,8 +109,10 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Redémarre la scène
+    /// Redémarre la partie
     /// </summary>
+    /// J'ai laissé une méthode séparé si je devais implémenter une logique de code 
+    /// Changement de map
     public void Rejouer()
     {
         CommencerPartie();
@@ -117,7 +121,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Affiche le compte à rebours
     /// </summary>
-    private void AfficherTimer()
+    private void AfficherCompteRebours()
     {
         int minutes = Mathf.FloorToInt(tempsEcoule / 60f);
         int secondes = Mathf.FloorToInt(tempsEcoule % 60f);
@@ -137,7 +141,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Séléction du spawn de la taupe
+    /// Sélection du spawn de la taupe
     /// </summary>
     /// <returns>Retourne le spawn choisi</returns>
     private int ChoisirSpawn()
@@ -146,7 +150,9 @@ public class GameManager : MonoBehaviour
         int spawnChoisi = -1;
 
         // Vérifie si il y a une case disponible
-        if (!System.Array.Exists(disponibiliteSpawn, dispo => dispo)) return -1; // // Généré par Claude.AI - 2026-04-07
+        // Généré par Claude.AI - 2026-04-07 
+        // prompt : Fait en sorte que la vérification du tableau soit plus optimisé.
+        if (!System.Array.Exists(disponibiliteSpawn, dispo => dispo)) return -1;
 
         while (spawnChoisi < 0)
         {
@@ -178,20 +184,8 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Détruit automatiquement la taupe après un délai si elle n'a pas été frappée
+    /// Détruit toute les taupes présentes dans le spawner
     /// </summary>
-    public IEnumerator SupprimerTaupe(GameObject taupe, float delai)
-    {
-        yield return new WaitForSeconds(delai);
-
-        if (taupe != null && etatActuel == EtatJeu.EnJeu && taupe.transform.parent != null && taupe.transform.parent.CompareTag("CaseSpawner"))
-        {
-            int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
-            disponibiliteSpawn[SpawnNumber] = true;
-            Destroy(taupe);
-        }
-    }
-
     private void SupprimerAllTaupe()
     {
         for (int i = 0; i < disponibiliteSpawn.Length; i++)
@@ -205,6 +199,21 @@ public class GameManager : MonoBehaviour
             {
                 Destroy(enfant.gameObject);
             }
+        }
+    }
+
+    /// <summary>
+    /// Détruit automatiquement la taupe après un délai si elle n'a pas été frappée
+    /// </summary>
+    public IEnumerator SupprimerTaupe(GameObject taupe, float delai)
+    {
+        yield return new WaitForSeconds(delai);
+
+        if (taupe != null && etatActuel == EtatJeu.EnJeu && taupe.transform.parent != null && taupe.transform.parent.CompareTag("CaseSpawner"))
+        {
+            int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
+            disponibiliteSpawn[SpawnNumber] = true;
+            Destroy(taupe);
         }
     }
 
