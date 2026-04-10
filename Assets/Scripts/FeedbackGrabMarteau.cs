@@ -58,8 +58,8 @@ public class FeedbackGrabMarteau : MonoBehaviour
     private void OnGrabExited(SelectExitEventArgs args)
     {
         var controller = args.interactorObject.transform.GetComponent<XRBaseInputInteractor>();
-
         controller.SendHapticImpulse(amplitudeGrabMarteau * 0.3f, dureeGrabMarteau * 0.5f);
+        
         audioSource.PlayOneShot(sonGrabMarteau);
     }
 }

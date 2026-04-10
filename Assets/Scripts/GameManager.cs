@@ -34,7 +34,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Textes")]
     [SerializeField] private TextMeshProUGUI texteTimer;
+    [SerializeField] private TextMeshProUGUI texteScoreActuel;
     [SerializeField] private TextMeshProUGUI texteScoreFinal;
+
 
     private EtatJeu etatActuel;
     private int pointPartie = 0;
@@ -83,11 +85,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CommencerPartie()
     {
-        tempsEcoule = 20f;
+        tempsEcoule = 30f;
         timerActif = true;
+        pointPartie = 0;
         AfficherTimer();
         ChangerEtat(EtatJeu.EnJeu);
         StartCoroutine(SpawnLoop());
+        texteScoreActuel.text = $"Score : {pointPartie}";
     }
 
     /// <summary>
@@ -98,6 +102,7 @@ public class GameManager : MonoBehaviour
         timerActif = false;
         texteScoreFinal.text = $"Score : {pointPartie}";
         ChangerEtat(EtatJeu.GameOver);
+        SupprimerAllTaupe();
     }
 
     /// <summary>
@@ -105,9 +110,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Rejouer()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
-        );
+        CommencerPartie();
     }
 
     /// <summary>
@@ -129,6 +132,7 @@ public class GameManager : MonoBehaviour
         if (quantitePoint < 0) return;
 
         pointPartie += quantitePoint;
+        texteScoreActuel.text = $"Score : {pointPartie}";
     }
 
     /// <summary>
@@ -183,6 +187,22 @@ public class GameManager : MonoBehaviour
             int SpawnNumber = Int32.Parse(taupe.transform.parent.gameObject.name);
             disponibiliteSpawn[SpawnNumber] = true;
             Destroy(taupe);
+        }
+    }
+
+    private void SupprimerAllTaupe()
+    {
+        for (int i = 0; i < disponibiliteSpawn.Length; i++)
+        {
+            disponibiliteSpawn[i] = true;
+        }
+
+        foreach (Transform spawner in SpawnerTaupe.transform)
+        {
+            foreach (Transform enfant in spawner)
+            {
+                Destroy(enfant.gameObject);
+            }
         }
     }
 
