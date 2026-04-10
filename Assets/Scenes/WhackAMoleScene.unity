@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 5112462}
   - component: {fileID: 5112461}
   - component: {fileID: 5112460}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1752,6 +1752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   SpawnerTaupe: {fileID: 1896459609}
   TaupePrefab: {fileID: 3193231071086183444, guid: 3f7e2b3b950143642acb1b6fc67697be, type: 3}
+  audioSpawn: {fileID: 8300000, guid: 101d99e6e9916764e8abd29e9db9e38b, type: 3}
   canvasMenu: {fileID: 438007759}
   canvasHUD: {fileID: 483538642}
   canvasGameOver: {fileID: 1368895775}
@@ -3035,6 +3036,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 842882b98406e804bb3e20e0783ffa59, type: 2}
+    - target: {fileID: 1568252385225619040, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597689789981299566, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2151770191527550368, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.7
@@ -3046,6 +3055,10 @@ PrefabInstance:
     - target: {fileID: 2151770191527550368, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.204
+      objectReference: {fileID: 0}
+    - target: {fileID: 2557252142681485212, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4244109931058576500, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalScale.z
@@ -3074,6 +3087,10 @@ PrefabInstance:
     - target: {fileID: 4277253952579352272, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.635
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498533150212882787, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4530716653117799804, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalScale.x
@@ -3135,6 +3152,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.204
       objectReference: {fileID: 0}
+    - target: {fileID: 6053158378207192239, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6572827025822360550, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -3159,6 +3180,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.635
       objectReference: {fileID: 0}
+    - target: {fileID: 6698994853743424832, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7438390628011975744, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7678462200417435391, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.1
@@ -3170,6 +3199,10 @@ PrefabInstance:
     - target: {fileID: 7678462200417435391, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.204
+      objectReference: {fileID: 0}
+    - target: {fileID: 7927623977422164711, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8076421084706190164, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3186,6 +3219,10 @@ PrefabInstance:
     - target: {fileID: 8556432365852707527, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
       propertyPath: m_Name
       value: SpawnerPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 8813942557014358262, guid: 73e479670a7c54a4a810f7fb16ddc863, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

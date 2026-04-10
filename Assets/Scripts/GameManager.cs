@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("Spawn")]
     [SerializeField] private GameObject SpawnerTaupe;
     [SerializeField] private GameObject TaupePrefab;
+    [SerializeField] private AudioClip audioSpawn;
     private bool[] disponibiliteSpawn =
     {
         true, true, true,
@@ -171,6 +172,7 @@ public class GameManager : MonoBehaviour
 
         Transform transformSpawnChoisi = SpawnerTaupe.transform.Find(spawnChoisi.ToString());
         GameObject taupe = Instantiate(TaupePrefab, transformSpawnChoisi.position, Quaternion.identity, transformSpawnChoisi); // Généré par Claude.AI - 2026-04-06
+        transformSpawnChoisi.GetComponent<AudioSource>().PlayOneShot(audioSpawn);
 
         StartCoroutine(SupprimerTaupe(taupe, 3f));
     }
